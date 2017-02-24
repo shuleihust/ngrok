@@ -16,7 +16,7 @@
 
 ## 编译安装
 
-**以下教程中所有的example.com请替换为自己的域名**
+**以下教程中所有的example.com请替换为自己的域名**(一级域名abc.com或者二级域名tunnel.abc.com都可以)
 
 ```
 #安装go环境
