@@ -16,6 +16,8 @@
 
 ## 编译安装
 
+**以下教程中所有的example.com请替换为自己的域名**
+
 ```
 #安装go环境
 apt-get install golang
@@ -34,9 +36,9 @@ git clone https://github.com/inconshreveable/ngrok.git ngrok
 cd ngrok
 #生成证书
 openssl genrsa -out rootCA.key 2048
-openssl req -x509 -new -nodes -key rootCA.key -subj "/CN=hongxd.com" -days 5000 -out rootCA.pem
+openssl req -x509 -new -nodes -key rootCA.key -subj "/CN=example.com" -days 5000 -out rootCA.pem
 openssl genrsa -out device.key 2048
-openssl req -new -key device.key -subj "/CN=hongxd.com" -out device.csr
+openssl req -new -key device.key -subj "/CN=example.com" -out device.csr
 openssl x509 -req -in device.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out device.crt -days 5000
 #替换证书
 cp rootCA.pem assets/client/tls/ngrokroot.crt
@@ -60,9 +62,9 @@ GOOS=darwin GOARCH=386 make release-server release-client
 
 ```
 #linux服务端后台启动方式
-nohup ngrokd -domain="hongxd.com" -httpAddr=":80" -httpsAddr=":443"   > /dev/null 2>&1 &
+nohup ngrokd -domain="example.com" -httpAddr=":80" -httpsAddr=":443"   > /dev/null 2>&1 &
 #windows服务端启动方式
-ngrokd -domain="hongxd.com" -httpAddr=":80" -httpsAddr=":443"
+ngrokd -domain="example.com" -httpAddr=":80" -httpsAddr=":443"
 ```
 
 #### 客户端
@@ -70,11 +72,11 @@ ngrokd -domain="hongxd.com" -httpAddr=":80" -httpsAddr=":443"
 ngrok.cfg文件内容
 
 ```
-server_addr: "hongxd.com:4443"
+server_addr: "example.com:4443"
 trust_host_root_certs: false
 tunnels:
-  example:
-    subdomain: "example"
+  test:
+    subdomain: "test"
     proto:
       http: "8080"
   ssh:
@@ -87,9 +89,9 @@ tunnels:
 
 ```
 #启动一个客户端
-ngrok -config=ngrok.cfg start example
+ngrok -config=ngrok.cfg start test
 #另一种启动方式
-ngrok -config=ngrok.cfg -subdomain example 8080
+ngrok -config=ngrok.cfg -subdomain test 8080
 #同时启动多个客户端
-ngrok -config=ngrok.cfg start example ssh
+ngrok -config=ngrok.cfg start test ssh
 ```
